@@ -1,0 +1,27 @@
+{
+  "name": "fpd",
+  "version": "1.0.0",
+  "description": "FPD",
+  "main": "index.js",
+  "scripts": {
+    "test": "+"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danialnab/FPD.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danialnab/FPD/issues"
+  },
+  "homepage": "https://github.com/Danialnab/FPD#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10",
+    "morgan": "^1.10.0",
+    "puppeteer": "^13.5.2"
+  }
+}
