@@ -14,92 +14,8 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
   <link id="pagestyle" href="/sui/assets/css/soft-design-system.css?v=1.0.7" rel="stylesheet" />
-  <style>
-    .fingerprint-spinner, .fingerprint-spinner * {
-      box-sizing: border-box;
-    }
-
-    .fingerprint-spinner {
-      height: 64px;
-      width: 64px;
-      padding: 2px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .fingerprint-spinner .spinner-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      border-top-color: #344767;
-      animation: fingerprint-spinner-animation 1500ms cubic-bezier(0.680, -0.750, 0.265, 1.750) infinite forwards;
-      margin: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: 0;
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(1) {
-      height: calc(60px / 9 + 0 * 60px / 9);
-      width: calc(60px / 9 + 0 * 60px / 9);
-      animation-delay: calc(50ms * 1);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(2) {
-      height: calc(60px / 9 + 1 * 60px / 9);
-      width: calc(60px / 9 + 1 * 60px / 9);
-      animation-delay: calc(50ms * 2);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(3) {
-      height: calc(60px / 9 + 2 * 60px / 9);
-      width: calc(60px / 9 + 2 * 60px / 9);
-      animation-delay: calc(50ms * 3);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(4) {
-      height: calc(60px / 9 + 3 * 60px / 9);
-      width: calc(60px / 9 + 3 * 60px / 9);
-      animation-delay: calc(50ms * 4);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(5) {
-      height: calc(60px / 9 + 4 * 60px / 9);
-      width: calc(60px / 9 + 4 * 60px / 9);
-      animation-delay: calc(50ms * 5);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(6) {
-      height: calc(60px / 9 + 5 * 60px / 9);
-      width: calc(60px / 9 + 5 * 60px / 9);
-      animation-delay: calc(50ms * 6);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(7) {
-      height: calc(60px / 9 + 6 * 60px / 9);
-      width: calc(60px / 9 + 6 * 60px / 9);
-      animation-delay: calc(50ms * 7);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(8) {
-      height: calc(60px / 9 + 7 * 60px / 9);
-      width: calc(60px / 9 + 7 * 60px / 9);
-      animation-delay: calc(50ms * 8);
-    }
-
-    .fingerprint-spinner .spinner-ring:nth-child(9) {
-      height: calc(60px / 9 + 8 * 60px / 9);
-      width: calc(60px / 9 + 8 * 60px / 9);
-      animation-delay: calc(50ms * 9);
-    }
-
-    @keyframes fingerprint-spinner-animation {
-      100% {
-        transform: rotate( 360deg );
-      }
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="mstyle.css">
 </head>
 
 <body class="contact-us">
@@ -112,6 +28,16 @@
             <a class="navbar-brand font-weight-bolder ms-sm-3" href="/">
               DigitechAM Freepik Downloader
             </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+              <li class="nav-item px-3">
+                <a class="btn btn-sm  bg-gradient-secondary  btn-round mb-0 me-1" href="/admin">Admin</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <a class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" href="/user/logout">Logout</a>
+              </ul>
           </div>
         </nav>
       </div>
@@ -145,6 +71,15 @@
                 <h3 class="text-gradient text-Dark">Downloader</h3>
                 <p class="mb-0">
                   Please paste the full link to the freepik asset that you are looking for below and press continue:
+                  <% if(error && error.length){ %>
+                    <script>
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Worng URL',
+                          text: '<%= error %>',
+                        })
+                    </script>
+                    <% } %> 
                 </p>
               </div>
               <form id="req-form" action="/req" method="post"  autocomplete="off">

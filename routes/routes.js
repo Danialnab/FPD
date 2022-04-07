@@ -3,8 +3,7 @@ const router = express.Router();
 const path = require("path");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const res = require("express/lib/response");
-const req = require("express/lib/request");
+const passport = require("passport");
 
 router.get("/", async (req, res) => {
   res.render("index");
@@ -22,7 +21,7 @@ let browser;
 
 const startBroswer = async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     slowMo: 100, // slow down by 250ms
     args: [`--window-size=1200,1000`],
     defaultViewport: {
@@ -34,10 +33,14 @@ const startBroswer = async () => {
 };
 startBroswer();
 
-
 router.post("/req", async (req, res) => {
   let fileName;
   const mlink = req.body.link;
+  if (!mlink.includes("www.freepik.com")) {
+    req.flash("error", "Your entered link is not a freepik link");
+    res.redirect("/");
+    return;
+  }
   const page = await browser.newPage();
   await page.goto(req.body.link);
   await page._client.send("Page.setDownloadBehavior", {

@@ -1,0 +1,84 @@
+
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="apple-touch-icon" sizes="76x76" href="favicon.png">
+      <link rel="icon" type="image/png" href="favicon.png">
+      <title>
+        DigitechAM Freepik Downloader - Login
+      </title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+      <link href="/sui/assets/css/nucleo-icons.css" rel="stylesheet" />
+      <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
+      <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+      <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
+      <link id="pagestyle" href="/sui/assets/css/soft-design-system.css?v=1.0.7" rel="stylesheet" />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+      <link rel="stylesheet" href="mstyle.css">
+    </head>
+    
+    <body class="contact-us">
+          <section>
+            <div class="page-header min-vh-100">
+              <div class="container">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                    <div class="card card-plain">
+                      <div class="card-header pb-0 text-left">
+                        <h4 class="font-weight-bolder">Sign In</h4>
+                        <p class="mb-0">Enter your username and password to sign in</p>
+                      </div>
+                      <div class="card-body">
+                        <form method="post" action="/user/login" role="form">
+                          <div class="mb-3">
+                            <input type="text" name="username" class="form-control form-control-lg" placeholder="Username" aria-label="Email" aria-describedby="email-addon">
+                          </div>
+                          <div class="mb-3">
+                            <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                          </div>
+                          <div class="text-center">
+                            <button type="submit" class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">Sign in</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+                    <div class="position-relative bg-gradient-dark h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
+                      <img src="/sui/assets/img/shapes/pattern-lines.svg" alt="pattern-lines" class="position-absolute opacity-4 start-0">
+                      <div class="position-relative">
+                        <img class="max-width-500 w-100 position-relative z-index-2" src="/sui/assets/img/illustrations/chat.png">
+                      </div>
+                      <h4 class="mt-5 text-white font-weight-bolder">DigitechAM Freepik Downloader</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if(success && success.length){ %>
+                <script>
+                  Swal.fire({
+                      icon: 'success',
+                      text: '<%= success %>',
+                    })
+                </script>
+                <% } %> 
+                <% if(error && error.length){ %>
+                    <script>
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error!',
+                          text: '<%= error %>',
+                        })
+                    </script>
+                    <% } %> 
+          </section>
+      <script src="/sui/assets/js/core/popper.min.js" type="text/javascript"></script>
+      <script src="/sui/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+      <script src="/sui/assets/js/plugins/perfect-scrollbar.min.js"></script>
+      <script src="/sui/assets/js/plugins/parallax.min.js"></script>
+      <script src="/sui/assets/js/soft-design-system.min.js?v=1.0.7" type="text/javascript"></script>
+    </body>
+    
+    </html>
