@@ -14,6 +14,92 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
   <link id="pagestyle" href="/sui/assets/css/soft-design-system.css?v=1.0.7" rel="stylesheet" />
+  <style>
+    .fingerprint-spinner, .fingerprint-spinner * {
+      box-sizing: border-box;
+    }
+
+    .fingerprint-spinner {
+      height: 64px;
+      width: 64px;
+      padding: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .fingerprint-spinner .spinner-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: #344767;
+      animation: fingerprint-spinner-animation 1500ms cubic-bezier(0.680, -0.750, 0.265, 1.750) infinite forwards;
+      margin: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(1) {
+      height: calc(60px / 9 + 0 * 60px / 9);
+      width: calc(60px / 9 + 0 * 60px / 9);
+      animation-delay: calc(50ms * 1);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(2) {
+      height: calc(60px / 9 + 1 * 60px / 9);
+      width: calc(60px / 9 + 1 * 60px / 9);
+      animation-delay: calc(50ms * 2);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(3) {
+      height: calc(60px / 9 + 2 * 60px / 9);
+      width: calc(60px / 9 + 2 * 60px / 9);
+      animation-delay: calc(50ms * 3);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(4) {
+      height: calc(60px / 9 + 3 * 60px / 9);
+      width: calc(60px / 9 + 3 * 60px / 9);
+      animation-delay: calc(50ms * 4);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(5) {
+      height: calc(60px / 9 + 4 * 60px / 9);
+      width: calc(60px / 9 + 4 * 60px / 9);
+      animation-delay: calc(50ms * 5);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(6) {
+      height: calc(60px / 9 + 5 * 60px / 9);
+      width: calc(60px / 9 + 5 * 60px / 9);
+      animation-delay: calc(50ms * 6);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(7) {
+      height: calc(60px / 9 + 6 * 60px / 9);
+      width: calc(60px / 9 + 6 * 60px / 9);
+      animation-delay: calc(50ms * 7);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(8) {
+      height: calc(60px / 9 + 7 * 60px / 9);
+      width: calc(60px / 9 + 7 * 60px / 9);
+      animation-delay: calc(50ms * 8);
+    }
+
+    .fingerprint-spinner .spinner-ring:nth-child(9) {
+      height: calc(60px / 9 + 8 * 60px / 9);
+      width: calc(60px / 9 + 8 * 60px / 9);
+      animation-delay: calc(50ms * 9);
+    }
+
+    @keyframes fingerprint-spinner-animation {
+      100% {
+        transform: rotate( 360deg );
+      }
+    }
+  </style>
 </head>
 
 <body class="contact-us">
@@ -23,7 +109,7 @@
       <div class="col-12">
         <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
           <div class="container-fluid px-0">
-            <a class="navbar-brand font-weight-bolder ms-sm-3" href="#">
+            <a class="navbar-brand font-weight-bolder ms-sm-3" href="/">
               DigitechAM Freepik Downloader
             </a>
           </div>
@@ -51,7 +137,7 @@
             </svg>
           </div>
     </div>
-      <div class="container">
+      <div id="maindiv"  class="container">
         <div class="row">
           <div class="col-lg-7 d-flex justify-content-center flex-column">
             <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
@@ -69,15 +155,53 @@
                         </label>
                         <input class="form-control" name="link" id="link" type="text">
                     </div>
-                    <button class="form-control btn bg-gradient-Dark">Continue</button>
+                    <button id="continuebtn" type="button" class="form-control btn bg-gradient-Dark">Continue</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+      <div id="loadingdiv" class="container d-none">
+        <div class="row">
+          <div class="col-lg-7 d-flex justify-content-center flex-column">
+            <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+              <div class="text-center">
+                <h3 class="text-gradient text-Dark">Downloading...</h3>
+                <p class="mb-0">
+                  Your file is being downloaded
+                </p>
+              </div>
+              <div class="d-flex justify-content-center align-items-center mt-5">
+                <div class="fingerprint-spinner">
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
+  <script>
+    const continueBtn = document.getElementById('continuebtn');
+    const continueFunc = function(){
+      document.getElementById('maindiv').classList.add('d-none');
+      document.getElementById('loadingdiv').classList.remove('d-none');
+      const myForm = document.getElementById('req-form');
+      myForm.submit();
+    }
+
+    continueBtn.addEventListener('click', continueFunc);
+  </script>
   <script src="/sui/assets/js/core/popper.min.js" type="text/javascript"></script>
   <script src="/sui/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
   <script src="/sui/assets/js/plugins/perfect-scrollbar.min.js"></script>

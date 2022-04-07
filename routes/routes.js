@@ -34,15 +34,6 @@ const startBroswer = async () => {
 };
 startBroswer();
 
-// router.post("/newreq", async (req, res) => {
-//   const { link } = req.body;
-//   const page = await browser.newPage();
-//   await page.goto(link);
-//   const linkThumb = await page.$eval(".thumb", (el) => el.src);
-//   const linkTitle = await page.$eval("h1", (el) => el.innerText);
-//   await page.close();
-//   res.render("confirmpage", { link, linkThumb, linkTitle });
-// });
 
 router.post("/req", async (req, res) => {
   let fileName;
@@ -89,7 +80,7 @@ router.post("/req", async (req, res) => {
           };
           if (!fs.existsSync(nName)) {
             await delay(3000);
-            await waitFile(nName);
+            await waitFile(nName, realFileName, mlink, linkThumb, linkTitle);
             resolve();
           } else {
             await page.close();
