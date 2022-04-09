@@ -11,7 +11,8 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const { isLoggedIn } = require("./middleware");
+const { isLoggedIn, isAdmin } = require("./middleware");
+const methodOverrid = require("method-override");
 
 mongoose.connect("mongodb://localhost:27017/fpd");
 mongoose.connection.on(
@@ -26,12 +27,14 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.locals.moment = require("moment");
 
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname + "/public")));
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
+app.use(methodOverrid("_method"));
 app.use(flash());
 
 const sessionConfig = {
@@ -60,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", userroutes);
-app.use("/admin", isLoggedIn, adminroutes);
+app.use("/admin", isLoggedIn, isAdmin, adminroutes);
 app.use("/", isLoggedIn, routes);
 
 

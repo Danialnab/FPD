@@ -1,88 +1,52 @@
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <link rel="apple-touch-icon" sizes="76x76" href="/favicon.png">
-      <link rel="icon" type="image/png" href="/favicon.png">
-      <title>
-        Admin - Users
-      </title>
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-      <link href="/sui/assets/css/nucleo-icons.css" rel="stylesheet" />
-      <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
-      <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-      <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
-      <link id="pagestyle" href="/sui/assets/css/soft-design-system.css?v=1.0.7" rel="stylesheet" />
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-      <link rel="stylesheet" href="mstyle.css">
-    </head>
-    
-    <body class="contact-us">
-
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="favicon.png">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>
-    DigitechAM Freepik Downloader
-  </title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <link href="/sui/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="/sui/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <link id="pagestyle" href="/sui/assets/css/soft-design-system.css?v=1.0.7" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-  <link rel="stylesheet" href="mstyle.css">
-</head>
-
-<body style="background-color: #232323;">
-  <!-- Navbar -->
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <nav class="navbar navbar-expand-lg  blur blur-rounded top-0 border-bottom z-index-3 shadow w-100 mt-4 d-none d-lg-block my-3 py-2">
-            <div class="container-fluid">
-              <a class="navbar-brand font-weight-bolder ms-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" >
-                DigitechAM Freepik Downloader
-              </a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navigation">
-                <ul class="navbar-nav navbar-nav-hover mx-auto">
-                  <li class="nav-item px-3">
-                    <a class="nav-link" href="/admin">
-                      Dashboard
-                    </a>
-                  </li>
-          
-                  <li class="nav-item px-3">
-                    <a class="nav-link">
-                      Users
-                    </a>
-                  </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <a class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" href="/user/logout">Logout</a>
-                  </ul>
-              </div>
-            </div>
-          </nav>
-          <div class="container">
-              <div class="card">
-                  <div class="card-body">
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#usermodal">Add a new user</button>
-                  </div>
-              </div>
-              <div class="row"></div>
+<% layout('/boiler/adminboiler') %>
+<div class="container mt-7">
+  <div class="card blur shadow">
+      <div class="card-body">
+        <button type="button" class="btn btn-dark bg-gradient-dark" data-bs-toggle="modal" data-bs-target="#usermodal">Add a new user</button>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Creation Time</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(let each of users){ %>
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div>
+                          <img src="/avatar.png" class="avatar avatar-sm me-3">
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-xs"><%= each.username %></h6>
+                          <p class="text-xs text-secondary mb-0"><%= each.email %></p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0"><%= each.role %></p>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <span class="text-secondary text-xs font-weight-bold"><%= moment(each.createdAt).format("MMMM Do YYYY, h:mm:ss a");%></span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <button onclick="deleteUser('<%= each.email %>')"class="btn btn-danger bg-gradient-danger btn-sm mb-0">Delete</button>
+                    </td>
+                  </tr>
+                  <% } %> 
+              </tbody>
+            </table>
           </div>
+        </div>
       </div>
-    </div>
   </div>
-  <div class="modal fade" id="usermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+  <div class="modal fade" id="usermodal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -92,7 +56,7 @@
         </button>
         </div>
         <div class="modal-body">
-        <form id="userform" action="/admin/users" method="POST">
+        <form id="userform" class="mb-0" action="/admin/users" method="POST">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input class="form-control" name="username" id="username" type="text" required>
@@ -105,8 +69,15 @@
                 <label for="password">Password:</label>
                 <input class="form-control" name="password" id="password" type="password" required>
             </div>
-            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit"  class="btn btn-dark">Add User</button>
+            <div class="form-group">
+              <label for="role">Role:</label>
+              <select class="form-control" name="role" id="role">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+          </div>
+            <button type="button" class="btn mb-0 bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit"  class="btn mb-0 btn-dark">Add User</button>
         </form>
         </div>
     </div>
@@ -121,11 +92,9 @@
         </script>
         <% } %> 
 </div>
-  <script src="/sui/assets/js/core/popper.min.js" type="text/javascript"></script>
-  <script src="/sui/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
-  <script src="/sui/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/sui/assets/js/plugins/parallax.min.js"></script>
-  <script src="/sui/assets/js/soft-design-system.min.js?v=1.0.7" type="text/javascript"></script>
-</body>
-
-</html>
+  <script>
+    const deleteUser = async function(email){
+      const deletedUser = await axios.post("/admin/userdel",{email});
+      window.location.href = window.location.href;
+    }
+  </script>

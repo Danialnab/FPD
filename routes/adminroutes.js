@@ -1,31 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Req = require("../models/requests");
 
 router.get("/", async (req, res) => {
-  res.render("admin/dash");
+  const usersCount = User.count({});
+  const requestsCount = Req.count({});
+  res.render("admin/dash", {});
 });
 
 router.get("/users", async (req, res) => {
-  res.render("admin/users");
+  const users = await User.find({});
+  res.render("admin/users", { users });
 });
+
 router.post("/users", async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, role, username, password } = req.body;
   console.log(email, username, password);
-  const user = new User({ email, username });
+  const user = new User({ email, username, role });
   const registeredUser = await User.register(user, password);
   req.flash("success", "User added to the system");
   res.redirect("/admin/users");
 });
 
-// router.get("/createadmin", async (req, res) => {
-//   const email = "admin@admin.com";
-//   const username = "admin";
-//   const password = "adminpassadmin";
-//   console.log(email, username, password);
-//   const user = new User({ email, username });
-//   const registeredUser = await User.register(user, password);
-//   res.send(`admin created: ${username}, ${password}`);
-// });
+router.post("/userdel", async (req, res) => {
+  const user = await User.findOneAndDelete(req.body);
+  res.send("done");
+});
+
+router.get("/createadmin", async (req, res) => {
+  const email = "admin@admin.com";
+  const username = "admin";
+  const password = "adminpassadmin";
+  const role = "admin";
+  console.log(email, username, password);
+  const user = new User({ email, username, role });
+  const registeredUser = await User.register(user, password);
+  res.send(`admin created: ${username}, ${password}`);
+});
 
 module.exports = router;
