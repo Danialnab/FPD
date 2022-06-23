@@ -35,7 +35,7 @@
 const dlBtn = document.getElementById('dlbtn');
 const ndlBtn = document.getElementById('ndlbtn');
 const dlFunc = function(){
-window.open('/downloads/<%= mdata.realFileName %>', '_blank');
+window.open('<%= mdata.realFileName %>', '_blank');
 ndlBtn.classList.remove('d-none')
 };
 dlBtn.addEventListener('click', dlFunc)

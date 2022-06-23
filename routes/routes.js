@@ -2,30 +2,20 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const puppeteer = require("puppeteer");
+const puppeteerExtra = require("puppeteer-extra");
+const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const fs = require("fs");
 const Req = require("../models/requests");
+const uniqId = require("uniqid");
 
 const downloadPath = path.resolve("./public/downloads");
-let browser;
+let fileName;
+
 const delay = function (time) {
   return new Promise(function (resolve) {
     setTimeout(resolve, time);
   });
 };
-
-const startBroswer = async () => {
-  browser = await puppeteer.launch({
-    headless: false,
-    slowMo: 50, // slow down by 50ms
-    args: [`--window-size=1200,1000`],
-    defaultViewport: {
-      width: 1200,
-      height: 1000,
-    },
-    userDataDir: "./user-data-dir",
-  });
-};
-startBroswer();
 
 router.get("/", async (req, res) => {
   res.render("index");
@@ -36,20 +26,47 @@ router.get("/archive", async (req, res) => {
   res.render("archive", { requests });
 });
 
+let browser;
+
+puppeteerExtra.use(stealthPlugin());
+
+const browserstart = async () => {
+  browser = await puppeteerExtra.launch({
+    headless: true,
+    slowMo: 50, // slow down by 50ms
+    args: [`--window-size=1200,1000`],
+    defaultViewport: {
+      width: 1200,
+      height: 1000,
+    },
+    userDataDir: "./user-data-dir",
+  });
+};
+
+browserstart();
+
 router.post("/req", async (req, res) => {
-  let fileName;
-  const mlink = req.body.link;
-  if (!mlink.includes("www.freepik.com")) {
+  const { link } = req.body;
+
+  if (!link.includes("www.freepik.com")) {
     req.flash("error", "Your entered link is not a freepik link");
     res.redirect("/");
     return;
   }
+
+  const uid = uniqId();
+  const dir = `./public/downloads/${uid}`;
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  const uDownloadPath = path.resolve(dir);
+
   const page = await browser.newPage();
-  await page.goto(req.body.link);
   await page._client.send("Page.setDownloadBehavior", {
     behavior: "allow",
-    downloadPath: downloadPath,
+    downloadPath: dir,
   });
+  await page.goto(req.body.link);
   const loginBtn = await page.$(".gr-auth--not-logged");
   if (loginBtn) {
     await page.click(".auth-link");
@@ -65,59 +82,44 @@ router.post("/req", async (req, res) => {
       await page.click(".avatar");
     }
   }
-  const linkThumb = await page.$eval(".thumb", (el) => el.src);
-  const linkTitle = await page.$eval("h1", (el) => el.innerText);
-  await page.click("#download-file");
+  const thumbLink = await page.$eval(".thumb", (el) => el.src);
+  const title = await page.$eval("h1", (el) => el.innerText);
   await page.click(".download-button");
-  page.on("response", (response) => {
-    const url = response.request().url();
-    const contentType = response.headers()["content-type"];
-    if (contentType === "application/zip") {
-      rawFileName = path.basename(response.request().url());
-      fileName = rawFileName.split("?")[0];
-      const waitFile = async function (
-        nName,
-        realFileName,
-        mlink,
-        linkThumb,
-        linkTitle
-      ) {
-        return new Promise(async (resolve, reject) => {
-          const mdata = {
-            mlink,
-            linkThumb,
-            linkTitle,
-            realFileName,
-          };
-          if (!fs.existsSync(nName)) {
-            await delay(3000);
-            await waitFile(nName, realFileName, mlink, linkThumb, linkTitle);
-            resolve();
-          } else {
-            await page.close();
-            const request = new Req({
-              name: linkTitle,
-              link: `/downloads/${realFileName}`,
-              image: linkThumb,
-              owner: req.user,
-            });
-            await request.save();
-            resolve();
-            res.render("confirmpage", { mdata });
-          }
-        });
+
+  let curFileName;
+  let fileExtension;
+
+  const getFileName = async () => {
+    fs.readdir(dir, (err, files) => {
+      files.forEach((file) => {
+        curFileName = file.split(".")[0];
+        fileExtension = file.split(".")[1];
+      });
+    });
+    if (fileExtension !== "crdownload") {
+      await page.close();
+
+      const mdata = {
+        mlink: link,
+        linkThumb: thumbLink,
+        linkTitle: title,
+        realFileName: `/downloads/${uid}/${curFileName}.${fileExtension}`,
       };
-      waitFile(
-        `./public/downloads/${fileName}`,
-        fileName,
-        mlink,
-        linkThumb,
-        linkTitle
-      );
+
+      const request = new Req({
+        name: title,
+        link: `/downloads/${uid}/${curFileName}.${fileExtension}`,
+        image: thumbLink,
+        owner: req.user,
+      });
+      await request.save();
+      res.render("confirmpage", { mdata });
+    } else {
+      await delay(1500);
+      getFileName();
     }
-  });
+  };
+  getFileName();
 });
-
-
 
 module.exports = router;
