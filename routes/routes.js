@@ -96,7 +96,7 @@ router.post("/req", async (req, res) => {
         fileExtension = fileNameArr[fileNameArr.length - 1];
       });
     });
-    if (fileExtension !== "crdownload") {
+    if (fileExtension !== "gooz") {
       await page.close();
       console.log(fileExtension, fileExtension.length);
       const mdata = {
