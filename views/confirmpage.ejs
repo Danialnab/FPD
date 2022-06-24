@@ -18,7 +18,7 @@
               <div class="form-group">
                   <input class="form-control" value="<%= mdata.mlink %> " name="link" id="link" type="text" readonly>
               </div>
-              <a id="dlbtn" class="form-control btn bg-gradient-Dark" href="" target="_blank">Download</a>
+              <a id="dlbtn" class="form-control btn bg-gradient-Dark" href="<%= mdata.realFileName %>" download>Download</a>
               <a id="ndlbtn" class="form-control btn btn-secondary d-none" href="/">Request A New Download</a>
           </div>
         </form>
@@ -35,7 +35,6 @@
 const dlBtn = document.getElementById('dlbtn');
 const ndlBtn = document.getElementById('ndlbtn');
 const dlFunc = function(){
-window.open('<%= mdata.realFileName %>', '_blank');
 ndlBtn.classList.remove('d-none')
 };
 dlBtn.addEventListener('click', dlFunc)
