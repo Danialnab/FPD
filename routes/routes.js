@@ -8,6 +8,7 @@ const Req = require("../models/requests");
 const uniqId = require("uniqid");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
+const Log = require("../models/logs");
 
 const delay = function (time) {
   return new Promise(function (resolve) {
@@ -17,6 +18,12 @@ const delay = function (time) {
 
 router.get("/", async (req, res) => {
   res.render("index");
+});
+
+router.get("/show/:id", async (req, res) => {
+  const { id } = req.params;
+  const foundReq = await Req.findById(id).populate("owner");
+  res.render("show", { foundReq });
 });
 
 router.get("/archive", async (req, res) => {
@@ -30,7 +37,7 @@ puppeteerExtra.use(stealthPlugin());
 
 const browserstart = async () => {
   browser = await puppeteerExtra.launch({
-    headless: false,
+    headless: true,
     slowMo: 50, // slow down by 50ms
     args: [`--window-size=1200,1000`],
     defaultViewport: {
@@ -107,6 +114,11 @@ router.post("/req", async (req, res) => {
         image: thumbLink,
         owner: req.user,
       });
+      const newLog = new Log({
+        action: `${req.user.username} requested the download of ${request.id}`,
+        owner: req.user,
+      });
+      await newLog.save();
       await request.save();
       res.render("confirmpage", { mdata });
     } else {
@@ -118,5 +130,3 @@ router.post("/req", async (req, res) => {
 });
 
 module.exports = router;
-
-

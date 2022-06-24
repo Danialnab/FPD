@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Req = require("../models/requests");
+const Log = require("../models/logs");
 
 router.get("/", async (req, res) => {
   const usersCount = User.count({});
@@ -12,6 +13,11 @@ router.get("/", async (req, res) => {
 router.get("/users", async (req, res) => {
   const users = await User.find({});
   res.render("admin/users", { users });
+});
+
+router.get("/logs", async (req, res) => {
+  const logs = await Log.find().sort({ createdAt: -1 });
+  res.render("admin/logs", { logs });
 });
 
 router.post("/users", async (req, res) => {

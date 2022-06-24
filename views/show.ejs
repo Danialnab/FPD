@@ -1,0 +1,22 @@
+<% layout('/boiler/userboiler') %>
+<div class="container mt-7">
+    <div class="card blur shadow">
+        <div class="card-body">
+            <div class="text-center">
+                <img src="<%= foundReq.image %>" class="border-radius-lg"  style="max-height: 70vh;">
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-11">
+                    <h4><%= foundReq.name %> </h4>
+                    <p>Created by: <%= foundReq.owner.username %> at <%= foundReq.createdAt %></p>
+                </div>
+                <div class="col-1 d-flex flex-row-reverse align-items-center">
+                    <div>
+                        <a class="btn btn-dark btn-lg" href="<%= foundReq.link %>" download="">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

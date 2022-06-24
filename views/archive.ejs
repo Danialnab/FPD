@@ -17,7 +17,8 @@
                                 <h6 style="font-size: 15px; overflow: hidden; text-overflow: ellipsis ; width: 100%; white-space: nowrap; "><%= requests[i].name %></h6>
                                 <p style="font-size: 12px;">Created by: 
                                     <%= requests[i].owner.username %></p>
-                                <a class="btn bg-gradient-dark btn-sm mb-0" href="<%= requests[i].link %>" download>Download</a>
+                                    <a class="btn bg-gradient-dark btn-sm mb-0" href="<%= requests[i].link %>" download>Download</a>
+                                    <a class="btn bg-gradient-secondary btn-sm mb-0 mt-2" href="/show/<%= requests[i].id %>" target="_blank">Details</a>
                             </div>
                     </div>
                 </div>
