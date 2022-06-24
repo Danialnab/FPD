@@ -4,9 +4,10 @@ const path = require("path");
 const puppeteerExtra = require("puppeteer-extra");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const fs = require("fs");
-const fsPromises = fs.promises;
 const Req = require("../models/requests");
 const uniqId = require("uniqid");
+const { promisify } = require("util");
+const readdir = promisify(require("fs").readdir);
 
 const delay = function (time) {
   return new Promise(function (resolve) {
@@ -82,24 +83,18 @@ router.post("/req", async (req, res) => {
   const thumbLink = await page.$eval(".thumb", (el) => el.src);
   const title = await page.$eval("h1", (el) => el.innerText);
   await page.click(".download-button");
-  await delay(5000);
+  await delay(2500);
 
   let curFileName;
   let fileExtension;
 
   const getFileName = async () => {
-    await fsPromises.readdir(dir, (err, files) => {
-      files.forEach((file) => {
-        const fileNameArr = file.split(".");
-        console.log("1", fileNameArr);
-        curFileName = fileNameArr[0];
-        fileExtension = fileNameArr[fileNameArr.length - 1];
-      });
-    });
-    console.log("2", fileExtension);
+    const files = await readdir(dir);
+    const fileNameArr = files[0].split(".");
+    curFileName = fileNameArr[0];
+    fileExtension = fileNameArr[fileNameArr.length - 1];
     if (fileExtension !== "crdownload") {
       await page.close();
-      console.log("3", fileExtension, fileExtension.length);
       const mdata = {
         mlink: link,
         linkThumb: thumbLink,
