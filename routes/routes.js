@@ -123,24 +123,4 @@ router.post("/req", async (req, res) => {
 
 module.exports = router;
 
-if (fileExtension !== "crdownload") {
-  await page.close();
-  console.log(fileExtension, fileExtension.length);
-  const mdata = {
-    mlink: link,
-    linkThumb: thumbLink,
-    linkTitle: title,
-    realFileName: `/downloads/${uid}/${curFileName}.${fileExtension}`,
-  };
-  const request = new Req({
-    name: title,
-    link: `/downloads/${uid}/${curFileName}.${fileExtension}`,
-    image: thumbLink,
-    owner: req.user,
-  });
-  await request.save();
-  res.render("confirmpage", { mdata });
-} else {
-  await delay(2500);
-  getFileName();
-}
+
