@@ -67,24 +67,25 @@ router.post("/req", async (req, res) => {
     downloadPath: dir,
   });
   await page.goto(req.body.link);
-  const loginBtn = await page.$(".gr-auth--not-logged");
-  if (loginBtn) {
-    await page.click(".auth-link");
-    const avatar = await page.$(".avatar");
-    if (!avatar) {
-      await page.$eval(
-        "#login-username",
-        (el) => (el.value = "daniyal.nabibakhsh@digitecham.com")
-      );
-      await page.$eval("#login-password", (el) => (el.value = "Dan677618!!"));
-      await page.click("#auth-login-form-1");
-    } else {
-      await page.click(".avatar");
-    }
-  }
+  // const loginBtn = await page.$(".gr-auth--not-logged");
+  // if (loginBtn) {
+  //   await page.click(".auth-link");
+  //   const avatar = await page.$(".avatar");
+  //   if (!avatar) {
+  //     await page.$eval(
+  //       "#login-username",
+  //       (el) => (el.value = "daniyal.nabibakhsh@digitecham.com")
+  //     );
+  //     await page.$eval("#login-password", (el) => (el.value = "Dan677618!!"));
+  //     await page.click("#auth-login-form-1");
+  //   } else {
+  //     await page.click(".avatar");
+  //   }
+  // }
   const thumbLink = await page.$eval(".thumb", (el) => el.src);
   const title = await page.$eval("h1", (el) => el.innerText);
   await page.click(".download-button");
+  await delay(1500);
 
   let curFileName;
   let fileExtension;
@@ -115,7 +116,7 @@ router.post("/req", async (req, res) => {
       await request.save();
       res.render("confirmpage", { mdata });
     } else {
-      await delay(1500);
+      await delay(2000);
       getFileName();
     }
   };
