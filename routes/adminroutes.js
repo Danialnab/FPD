@@ -16,7 +16,7 @@ router.get("/users", async (req, res) => {
 });
 
 router.get("/logs", async (req, res) => {
-  const logs = await Log.find().sort({ createdAt: -1 });
+  const logs = await Log.find().populate("owner").sort({ createdAt: -1 });
   res.render("admin/logs", { logs });
 });
 

@@ -27,7 +27,16 @@ router.get("/show/:id", async (req, res) => {
 });
 
 router.get("/archive", async (req, res) => {
-  const requests = await Req.find({}).populate("owner", "username");
+  const requests = await Req.find().populate("owner", "username");
+  res.render("archive", { requests });
+});
+
+router.post("/archive", async (req, res) => {
+  const { searchTerm } = req.body;
+  const requests = await Req.find({ name: { $regex: searchTerm } }).populate(
+    "owner",
+    "username"
+  );
   res.render("archive", { requests });
 });
 

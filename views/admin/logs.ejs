@@ -18,7 +18,7 @@
                             <span class="text-secondary text-xs font-weight-bold"><%= moment(each.createdAt).format("MMMM Do YYYY, h:mm:ss a");%></span>
                         </td>
                         <td>
-                          <p class="text-xs font-weight-bold mb-0"><%= each.owner %></p>
+                          <p class="text-xs font-weight-bold mb-0"><%= each.owner.username %></p>
                         </td>
                         <td class="align-middle text-center text-sm">
                             <p class="text-xs font-weight-bold mb-0"><%= each.action %></p>
