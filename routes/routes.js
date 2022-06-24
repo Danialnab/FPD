@@ -91,15 +91,15 @@ router.post("/req", async (req, res) => {
     fs.readdir(dir, (err, files) => {
       files.forEach((file) => {
         const fileNameArr = file.split(".");
-        console.log(fileNameArr);
+        console.log("1", fileNameArr);
         curFileName = fileNameArr[0];
         fileExtension = fileNameArr[fileNameArr.length - 1];
       });
     });
-    console.log(fileExtension);
+    console.log("2", fileExtension);
     if (fileExtension !== "crdownload") {
       await page.close();
-      console.log(fileExtension, fileExtension.length);
+      console.log("3", fileExtension, fileExtension.length);
       const mdata = {
         mlink: link,
         linkThumb: thumbLink,
