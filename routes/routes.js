@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const puppeteer = require("puppeteer");
 const puppeteerExtra = require("puppeteer-extra");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const fs = require("fs");
+const fsPromises = fs.promises;
 const Req = require("../models/requests");
 const uniqId = require("uniqid");
 
@@ -88,7 +88,7 @@ router.post("/req", async (req, res) => {
   let fileExtension;
 
   const getFileName = async () => {
-    fs.readdir(dir, (err, files) => {
+    await fsPromises.readdir(dir, (err, files) => {
       files.forEach((file) => {
         const fileNameArr = file.split(".");
         console.log("1", fileNameArr);
