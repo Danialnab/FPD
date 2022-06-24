@@ -97,7 +97,7 @@ router.post("/req", async (req, res) => {
     });
     if (fileExtension !== "crdownload") {
       await page.close();
-      console.log(fileExtension);
+      console.log(fileExtension, fileExtension.length);
       const mdata = {
         mlink: link,
         linkThumb: thumbLink,
