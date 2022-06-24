@@ -91,6 +91,7 @@ router.post("/req", async (req, res) => {
     fs.readdir(dir, (err, files) => {
       files.forEach((file) => {
         const fileNameArr = file.split(".");
+        console.log(fileNameArr);
         curFileName = fileNameArr[0];
         fileExtension = fileNameArr[fileNameArr.length - 1];
       });
@@ -104,7 +105,6 @@ router.post("/req", async (req, res) => {
         linkTitle: title,
         realFileName: `/downloads/${uid}/${curFileName}.${fileExtension}`,
       };
-
       const request = new Req({
         name: title,
         link: `/downloads/${uid}/${curFileName}.${fileExtension}`,
