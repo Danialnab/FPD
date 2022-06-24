@@ -8,9 +8,6 @@ const fs = require("fs");
 const Req = require("../models/requests");
 const uniqId = require("uniqid");
 
-const downloadPath = path.resolve("./public/downloads");
-let fileName;
-
 const delay = function (time) {
   return new Promise(function (resolve) {
     setTimeout(resolve, time);
@@ -32,7 +29,7 @@ puppeteerExtra.use(stealthPlugin());
 
 const browserstart = async () => {
   browser = await puppeteerExtra.launch({
-    headless: true,
+    headless: false,
     slowMo: 50, // slow down by 50ms
     args: [`--window-size=1200,1000`],
     defaultViewport: {
@@ -64,7 +61,7 @@ router.post("/req", async (req, res) => {
   const page = await browser.newPage();
   await page._client.send("Page.setDownloadBehavior", {
     behavior: "allow",
-    downloadPath: dir,
+    downloadPath: uDownloadPath,
   });
   await page.goto(req.body.link);
   // const loginBtn = await page.$(".gr-auth--not-logged");
@@ -85,7 +82,7 @@ router.post("/req", async (req, res) => {
   const thumbLink = await page.$eval(".thumb", (el) => el.src);
   const title = await page.$eval("h1", (el) => el.innerText);
   await page.click(".download-button");
-  await delay(1500);
+  await delay(5000);
 
   let curFileName;
   let fileExtension;
@@ -96,6 +93,7 @@ router.post("/req", async (req, res) => {
         curFileName = file.split(".")[0];
         fileExtension = file.split(".")[1];
       });
+      console.log(fileExtension);
     });
     if (fileExtension !== "crdownload") {
       await page.close();
@@ -116,7 +114,7 @@ router.post("/req", async (req, res) => {
       await request.save();
       res.render("confirmpage", { mdata });
     } else {
-      await delay(2000);
+      await delay(2500);
       getFileName();
     }
   };
