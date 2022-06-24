@@ -90,8 +90,9 @@ router.post("/req", async (req, res) => {
   const getFileName = async () => {
     fs.readdir(dir, (err, files) => {
       files.forEach((file) => {
-        curFileName = file.split(".")[0];
-        fileExtension = file.split(".")[1];
+        const fileNameArr = file.split(".");
+        curFileName = fileNameArr[0];
+        fileExtension = fileNameArr[fileNameArr.length - 1];
       });
       console.log(fileExtension);
     });
