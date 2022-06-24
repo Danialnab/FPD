@@ -37,7 +37,7 @@ puppeteerExtra.use(stealthPlugin());
 
 const browserstart = async () => {
   browser = await puppeteerExtra.launch({
-    headless: true,
+    headless: false,
     slowMo: 50, // slow down by 50ms
     args: [`--window-size=1200,1000`],
     defaultViewport: {
@@ -101,7 +101,6 @@ router.post("/req", async (req, res) => {
     curFileName = fileNameArr[0];
     fileExtension = fileNameArr[fileNameArr.length - 1];
     if (fileExtension !== "crdownload") {
-      await page.close();
       const mdata = {
         mlink: link,
         linkThumb: thumbLink,
@@ -120,6 +119,7 @@ router.post("/req", async (req, res) => {
       });
       await newLog.save();
       await request.save();
+      await page.close();
       res.render("confirmpage", { mdata });
     } else {
       await delay(2500);
