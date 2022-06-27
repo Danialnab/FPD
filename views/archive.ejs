@@ -16,8 +16,8 @@
                             <img src="<%= requests[i].image %>" style="max-height: 160px; max-width: 100%;" class="border-radius-lg shadow" alt="">
                         </div>
                             <div class="col d-flex flex-column justify-content-between">
-                                <h6 style="font-size: 15px; overflow: hidden; text-overflow: ellipsis ; width: 100%; white-space: nowrap; "><%= requests[i].name %></h6>
-                                <p style="font-size: 9px;">Created by
+                                <h6 class="mt-2 mb-0" style="font-size: 15px; overflow: hidden; text-overflow: ellipsis ; width: 100%; white-space: nowrap; "><%= requests[i].name %></h6>
+                                <p class="mb-2" style="font-size: 9px;">Created by
                                     <%= requests[i].owner.username %> at
                                     <%=  moment(requests[i].createdAt).format("l, LT");%> 
                                 </p>
