@@ -9,7 +9,6 @@ const uniqId = require("uniqid");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Log = require("../models/logs");
-const req = require("express/lib/request");
 
 const delay = function (time) {
   return new Promise(function (resolve) {
@@ -18,7 +17,8 @@ const delay = function (time) {
 };
 
 router.get("/", async (req, res) => {
-  res.render("index");
+  const requests = await Req.find().sort({ id: -1 }).limit(5).populate("owner");
+  res.render("index", { requests });
 });
 
 router.get("/show/:id", async (req, res) => {
