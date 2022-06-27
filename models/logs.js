@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoosepaginate = require("mongoose-paginate-v2");
 
 const LogSchema = new Schema(
   {
@@ -11,5 +12,7 @@ const LogSchema = new Schema(
   },
   { timestamps: true }
 );
+
+LogSchema.plugin(mongoosepaginate);
 
 module.exports = mongoose.model("Log", LogSchema);

@@ -12,7 +12,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% for(let each of logs){ %>
+                    <% for(let each of logsRaw.docs){ %>
                       <tr>
                         <td>
                             <span class="text-secondary text-xs font-weight-bold"><%= moment(each.createdAt).format("MMMM Do YYYY, h:mm:ss a");%></span>
@@ -28,6 +28,30 @@
                   </tbody>
                 </table>
               </div>
-        </div>
+              <nav class="mt-3">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/logs?page=<%= logsRaw.prevPage %>" aria-label="Previous">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <% if(logsRaw.prevPage){ %>
+                    <li class="page-item"><a class="page-link" href="/admin/logs?page=<%= logsRaw.prevPage %>"><%= logsRaw.prevPage %> </a></li>
+                    <% } %> 
+                  <li class="page-item"><a class="page-link" href="/admin/logs?page=<%= logsRaw.page %>"><%= logsRaw.page %></a></li>
+                  <% if(logsRaw.nextPage){ %>
+                    <li class="page-item"><a class="page-link" href="/admin/logs?page=<%= logsRaw.nextPage %>"><%= logsRaw.nextPage %></a></li>
+                    <% } %> 
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/logs?page=<%= logsRaw.nextPage %>" aria-label="Next">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
     </div>
+    
   </div>

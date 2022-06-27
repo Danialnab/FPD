@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
     userstats[each.username] = userCount;
   }
 
-
   res.render("admin/dash", {
     usersCount,
     requestsCount,
@@ -46,21 +45,28 @@ router.post("/chartdata", async (req, res) => {
   res.send(chartData);
 });
 
-
-
 router.get("/users", async (req, res) => {
   const users = await User.find({});
   res.render("admin/users", { users });
 });
 
 router.get("/logs", async (req, res) => {
-  const logs = await Log.find().populate("owner").sort({ createdAt: -1 });
-  res.render("admin/logs", { logs });
+  console.log(req.query);
+  const options = {
+    page: req.query.page || "1",
+    limit: 20,
+    sort: { createdAt: -1 },
+    populate: "owner",
+  };
+  // const logs = await Log.find().populate("owner").sort({ createdAt: -1 });
+  const logs = await Log.paginate({}, options, function (err, result) {
+    const logsRaw = result;
+    res.render("admin/logs", { logsRaw });
+  });
 });
 
 router.post("/users", async (req, res) => {
   const { email, role, username, password } = req.body;
-  console.log(email, username, password);
   const user = new User({ email, username, role });
   const registeredUser = await User.register(user, password);
   req.flash("success", "User added to the system");
@@ -77,7 +83,6 @@ router.get("/createadmin", async (req, res) => {
   const username = "admin";
   const password = "adminpassadmin";
   const role = "admin";
-  console.log(email, username, password);
   const user = new User({ email, username, role });
   const registeredUser = await User.register(user, password);
   res.send(`admin created: ${username}, ${password}`);
