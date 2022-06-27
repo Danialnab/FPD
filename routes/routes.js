@@ -9,6 +9,7 @@ const uniqId = require("uniqid");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Log = require("../models/logs");
+const req = require("express/lib/request");
 
 const delay = function (time) {
   return new Promise(function (resolve) {
@@ -24,6 +25,22 @@ router.get("/show/:id", async (req, res) => {
   const { id } = req.params;
   const foundReq = await Req.findById(id).populate("owner");
   res.render("show", { foundReq });
+});
+
+router.post("/deletereq", async (req, res) => {
+  const { id } = req.body;
+  const request = await Req.findById(id);
+  const pathArr = request.link.split("/");
+  const path = pathArr[pathArr.length - 2];
+  fs.rmdir(`./public/downloads/${path}`, { recursive: true }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(`${path} was successfully removed.`);
+    }
+  });
+  await Req.findByIdAndDelete(id);
+  res.send("received");
 });
 
 router.get("/archive", async (req, res) => {

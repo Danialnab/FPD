@@ -1,4 +1,5 @@
 <% layout('/boiler/userboiler') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="container mt-7">
     <div class="card blur shadow">
         <div class="card-body">
@@ -7,16 +8,33 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-11">
+                <div class="col-10">
                     <h4><%= foundReq.name %> </h4>
                     <p>Created by: <%= foundReq.owner.username %> at <%= foundReq.createdAt %></p>
                 </div>
-                <div class="col-1 d-flex flex-row-reverse align-items-center">
+                <div class="col-2 d-flex flex-row-reverse align-items-center">
                     <div>
-                        <a class="btn btn-dark btn-lg" href="<%= foundReq.link %>" download="">Download</a>
+                        <a class="btn bg-gradient-dark btn-lg w-100" href="<%= foundReq.link %>" download>Download</a>
+                        <% if(user.role === 'admin') { %> 
+                        <a class="btn bg-gradient-danger btn-lg w-100" onclick="deleteReq('<%=foundReq.id %>')" >Delete</a>
+                        <% } %> 
                     </div>
                 </div>
             </div>
         </div>
     </div>
   </div>
+  <script>
+      const deleteReq = (id)=>{
+        console.log(id);
+        axios.post('/deletereq', {
+        id: id
+        })
+        .then(function (response) {
+            window.location='/';
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        }
+  </script>
