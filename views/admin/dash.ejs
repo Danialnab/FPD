@@ -48,6 +48,33 @@
             </div>
         </div>
     </div>
+    <div class="card blur shadow mt-2">
+        <div class="card-body">
+            <h4>User downloads:</h4>
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(let [key,value] of Object.entries(userstats)) { %>
+                        <tr>
+                            <td class="text-sm">
+                                <p class="text-xs font-weight-bold mb-0 text-dark"><%= key %></p>
+                            </td>
+                            <td class="text-sm">
+                                <p class="text-xs font-weight-bold mb-0 text-dark"><%= value %></p>
+                            </td>
+                        </tr>
+                        <% } %> 
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
   </div>
 
   <script>

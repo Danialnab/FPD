@@ -13,6 +13,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const { isLoggedIn, isAdmin } = require("./middleware");
 const methodOverrid = require("method-override");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 mongoose.connect("mongodb://localhost:27017/fpd");
 mongoose.connection.on(
@@ -24,6 +25,15 @@ mongoose.connection.on("open", () => {
 });
 
 const app = express();
+
+const store = new MongoDBStore({
+  uri: "mongodb://localhost:27017/fpd",
+  collection: "mySessions",
+});
+
+store.on("error", function (error) {
+  console.log(error);
+});
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -41,6 +51,7 @@ const sessionConfig = {
   secret: "thisisasecret1",
   resave: false,
   saveUninitialized: true,
+  store: store,
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24,

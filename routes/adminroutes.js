@@ -5,16 +5,25 @@ const Req = require("../models/requests");
 const Log = require("../models/logs");
 
 router.get("/", async (req, res) => {
-  const [usersCount, requestsCount, logsCount] = await Promise.all([
+  const [usersCount, requestsCount, logsCount, users] = await Promise.all([
     User.count({}),
     Req.count({}),
     Log.count({}),
+    User.find({}),
   ]);
+
+  let userstats = {};
+  for (let each of users) {
+    const userCount = await Req.count({ owner: each.id });
+    userstats[each.username] = userCount;
+  }
+
 
   res.render("admin/dash", {
     usersCount,
     requestsCount,
     logsCount,
+    userstats,
   });
 });
 
