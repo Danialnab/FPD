@@ -5,10 +5,39 @@ const Req = require("../models/requests");
 const Log = require("../models/logs");
 
 router.get("/", async (req, res) => {
-  const usersCount = User.count({});
-  const requestsCount = Req.count({});
-  res.render("admin/dash", {});
+  const [usersCount, requestsCount, logsCount] = await Promise.all([
+    User.count({}),
+    Req.count({}),
+    Log.count({}),
+  ]);
+
+  res.render("admin/dash", {
+    usersCount,
+    requestsCount,
+    logsCount,
+  });
 });
+
+router.post("/chartdata", async (req, res) => {
+  const lastSevenDaysReqs = await Req.find({
+    timestamp: {
+      $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000),
+    },
+  });
+
+  let chartData = {};
+  for (let each of lastSevenDaysReqs) {
+    const date = each.createdAt.getDate();
+    if (!chartData[date]) {
+      chartData[date] = 0;
+    }
+    chartData[date]++;
+  }
+
+  res.send(chartData);
+});
+
+
 
 router.get("/users", async (req, res) => {
   const users = await User.find({});

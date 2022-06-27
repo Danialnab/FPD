@@ -34,21 +34,31 @@
       <div class="col-lg-5 d-flex justify-content-center flex-column">
         <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
           <h4 class="text-gradient text-Dark mb-0 mt-0">Latest downloads:</h4>
-          <hr class="mt-2">
           <% for(let each of requests) {%>
-            <div class="row">
-              <div class="col-8">
+            <style>
+              .eachItemIndex {
+                height: 120px;
+              }
+              .eachItemIndex:hover {
+                background-color: rgba(0, 0, 0, 0.055);
+              }
+            </style>
+            <a class="row eachItemIndex" href="/show/<%= each.id %>" target="_blank">
+              <hr class="mt-2 mb-2">
+              <div class="col-8 d-flex flex-column justify-content-between">
                 <h6 style="font-size: 14px;"><%= each.name %> </h6>
-                <p class="m-0"  style="font-size: 10px;">By: <%= each.owner.username %></p>
-                <p class="m-0"  style="font-size: 10px;">Created At: <%= moment(each.createdAt).format("l, LT"); %></p>
+                <div>
+                  <p class="m-0"  style="font-size: 10px;">By: <%= each.owner.username %></p>
+                  <p class="m-0"  style="font-size: 10px;">Created At: <%= moment(each.createdAt).format("l, LT"); %></p>
+                </div>
               </div>
               <div class="col-4">
                 <div class="d-flex flex-row-reverse">
                   <img class="img-fluid border-radius-lg" style="max-height: 100px;" src="<%= each.image %>" alt="">
                 </div>
               </div>
-              <hr class="mt-2 mb-2">
-            </div>
+              
+            </a>
             <% } %> 
         </div>
       </div>

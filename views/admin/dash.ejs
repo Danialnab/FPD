@@ -1,1 +1,89 @@
 <% layout('/boiler/adminboiler') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+    .total-item {
+        background-color: #344767;
+        border-radius: 10px;
+        margin: 3px;
+        padding: 10px;
+    }
+    .total-item h5,p {
+        color: white;
+    }
+</style>
+<div class="container mt-7">
+    <div class="card blur shadow">
+        <div class="card-body">
+            <h4>Totals:</h4>
+            <div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="total-item">
+                            <h5 class="color-light">Requests</h5>
+                            <p><%= requestsCount %></p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="total-item">
+                            <h5>Users</h5>
+                            <p><%= usersCount %></p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="total-item">
+                            <h5>Logs</h5>
+                            <p><%= logsCount %> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card blur shadow mt-2">
+        <div class="card-body">
+            <h4>Daily downloads:</h4>
+            <div class="chart">
+                <canvas id="bar-chart" class="chart-canvas" height="100px"></canvas>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    axios.post('/admin/chartdata', {})
+    .then(function (response) {
+        const mdata = response.data;
+        let receivedLables = []
+        let receivedData = []
+
+        for (let [key,value] of Object.entries(mdata)){
+            receivedLables.push(key);
+            receivedData.push(value)
+        }
+        
+        const data = {
+        labels: receivedLables,
+        datasets: [{
+            label: 'Last 7 days',
+            backgroundColor: '#344767',
+            data: receivedData,
+        }]
+        };
+    
+        const config = {
+        type: 'bar',
+        data: data,
+        options: {}
+        };
+
+        const myChart = new Chart(
+        document.getElementById('bar-chart'),
+        config
+        );
+
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  </script>
