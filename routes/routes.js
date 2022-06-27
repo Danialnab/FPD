@@ -17,7 +17,10 @@ const delay = function (time) {
 };
 
 router.get("/", async (req, res) => {
-  const requests = await Req.find().sort({ id: -1 }).limit(5).populate("owner");
+  const requests = await Req.find()
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .populate("owner");
   res.render("index", { requests });
 });
 
