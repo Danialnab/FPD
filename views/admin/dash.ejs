@@ -13,66 +13,72 @@
     }
 </style>
 <div class="container mt-7">
-    <div class="card blur shadow">
+    <div class="card blur shadow mb-4">
         <div class="card-body">
-            <h4>Totals:</h4>
-            <div>
-                <div class="row">
-                    <div class="col-4">
-                        <div class="total-item">
-                            <h5 class="color-light">Requests</h5>
-                            <p><%= requestsCount %></p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="total-item">
-                            <h5>Users</h5>
-                            <p><%= usersCount %></p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="total-item">
-                            <h5>Logs</h5>
-                            <p><%= logsCount %> </p>
+            <h4>Daily downloads:</h4>
+            <div class="chart">
+                <canvas id="bar-chart" class="chart-canvas" height="50px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card blur shadow">
+                <div class="card-body">
+                    <h4>Totals:</h4>
+                    <div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="total-item">
+                                    <h5 class="color-light">Requests</h5>
+                                    <p><%= requestsCount %></p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="total-item">
+                                    <h5>Users</h5>
+                                    <p><%= usersCount %></p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="total-item">
+                                    <h5>Logs</h5>
+                                    <p><%= logsCount %> </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card blur shadow mt-2">
-        <div class="card-body">
-            <h4>Daily downloads:</h4>
-            <div class="chart">
-                <canvas id="bar-chart" class="chart-canvas" height="100px"></canvas>
+        <div class="col-6">
+            <div class="card blur shadow">
+                <div class="card-body">
+                    <h4>User downloads:</h4>
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                          <thead>
+                            <tr>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Count</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% for(let [key,value] of Object.entries(userstats)) { %>
+                                <tr>
+                                    <td class="text-sm">
+                                        <p class="text-xs font-weight-bold mb-0 text-dark"><%= key %></p>
+                                    </td>
+                                    <td class="text-sm">
+                                        <p class="text-xs font-weight-bold mb-0 text-dark"><%= value %></p>
+                                    </td>
+                                </tr>
+                                <% } %> 
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="card blur shadow mt-2">
-        <div class="card-body">
-            <h4>User downloads:</h4>
-            <div class="table-responsive">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Count</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% for(let [key,value] of Object.entries(userstats)) { %>
-                        <tr>
-                            <td class="text-sm">
-                                <p class="text-xs font-weight-bold mb-0 text-dark"><%= key %></p>
-                            </td>
-                            <td class="text-sm">
-                                <p class="text-xs font-weight-bold mb-0 text-dark"><%= value %></p>
-                            </td>
-                        </tr>
-                        <% } %> 
-                  </tbody>
-                </table>
-              </div>
         </div>
     </div>
   </div>
