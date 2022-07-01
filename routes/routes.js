@@ -68,7 +68,7 @@ const browserstart = async () => {
   browser = await puppeteerExtra.launch({
     headless: false,
     slowMo: 50, // slow down by 50ms
-    args: [`--window-size=1200,1000`],
+    args: ["--no-sandbox", `--window-size=1200,1000`],
     defaultViewport: {
       width: 1200,
       height: 1000,
