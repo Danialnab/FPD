@@ -78,6 +78,6 @@ app.use("/admin", isLoggedIn, isAdmin, adminroutes);
 app.use("/", isLoggedIn, routes);
 
 
-app.listen(3000, "0.0.0.0", () => {
-  console.log("serving on port 3000");
+app.listen(80, "0.0.0.0", () => {
+  console.log("serving on port 80");
 });
