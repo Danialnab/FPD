@@ -47,17 +47,25 @@ router.post("/deletereq", async (req, res) => {
 });
 
 router.get("/archive", async (req, res) => {
-  const requests = await Req.find().populate("owner", "username");
-  res.render("archive", { requests });
+  const options = {
+    page: req.query.page || "1",
+    limit: 12,
+    // sort: { createdAt: -1 },
+    // populate: ["owner", "username"],
+  };
+  // const requests = await Req.find().populate("owner", "username");
+  await Req.paginate({}, options, function (err, result) {
+    const requests = result;
+    res.render("archive", { requests });
+  });
 });
 
 router.post("/archive", async (req, res) => {
   const { searchTerm } = req.body;
-  const requests = await Req.find({ name: { $regex: searchTerm } }).populate(
-    "owner",
-    "username"
-  );
-  res.render("archive", { requests });
+  const requests = await Req.find({
+    name: { $regex: searchTerm, $options: "i" },
+  }).populate("owner", "username");
+  res.render("search", { requests });
 });
 
 let browser;
@@ -66,7 +74,7 @@ puppeteerExtra.use(stealthPlugin());
 
 const browserstart = async () => {
   browser = await puppeteerExtra.launch({
-    headless: false,
+    headless: true,
     slowMo: 50, // slow down by 50ms
     args: ["--no-sandbox", `--window-size=1200,1000`],
     defaultViewport: {

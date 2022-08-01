@@ -27,11 +27,19 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/chartdata", async (req, res) => {
+  const now = new Date();
+  const lastWeek = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - 7
+  );
   const lastSevenDaysReqs = await Req.find({
-    timestamp: {
-      $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000),
+    createdAt: {
+      $gte: lastWeek,
     },
   });
+
+  console.log(lastSevenDaysReqs);
 
   let chartData = {};
   for (let each of lastSevenDaysReqs) {
@@ -51,7 +59,6 @@ router.get("/users", async (req, res) => {
 });
 
 router.get("/logs", async (req, res) => {
-  console.log(req.query);
   const options = {
     page: req.query.page || "1",
     limit: 20,

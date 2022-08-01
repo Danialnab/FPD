@@ -14,6 +14,7 @@ const User = require("./models/user");
 const { isLoggedIn, isAdmin } = require("./middleware");
 const methodOverrid = require("method-override");
 const MongoDBStore = require("connect-mongodb-session")(session);
+require("dotenv").config();
 
 mongoose.connect("mongodb://localhost:27017/fpd");
 mongoose.connection.on(
@@ -77,7 +78,6 @@ app.use("/user", userroutes);
 app.use("/admin", isLoggedIn, isAdmin, adminroutes);
 app.use("/", isLoggedIn, routes);
 
-
-app.listen(80, "0.0.0.0", () => {
+app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("serving on port 80");
 });
