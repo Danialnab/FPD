@@ -51,7 +51,7 @@ router.get("/archive", async (req, res) => {
     page: req.query.page || "1",
     limit: 12,
     sort: { createdAt: -1 },
-    // populate: ["owner", "username"],
+    populate: ["owner"],
   };
   // const requests = await Req.find().populate("owner", "username");
   await Req.paginate({}, options, function (err, result) {

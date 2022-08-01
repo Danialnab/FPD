@@ -39,8 +39,6 @@ router.post("/chartdata", async (req, res) => {
     },
   });
 
-  console.log(lastSevenDaysReqs);
-
   let chartData = {};
   for (let each of lastSevenDaysReqs) {
     const date = each.createdAt.getDate();

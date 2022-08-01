@@ -7,7 +7,7 @@
                     <li class="page-item">
                         <a class="page-link" href="/archive?page=<%= requests.prevPage %>" aria-label="Previous">
                           <i class="fa fa-angle-left"></i>
-                          <span class="sr-only">Previous</span>
+                          <span class="sr-only"></span>
                         </a>
                       </li>
                       <li class="page-item"><a class="page-link" href="/archive?page=<%= requests.prevPage %>"><%= requests.prevPage %></a></li>
@@ -16,9 +16,9 @@
                 <% if(requests.hasNextPage){ %>
                     <li class="page-item"><a class="page-link" href="/archive?page=<%= requests.nextPage %>"><%= requests.nextPage %></a></li>
                 <li class="page-item">
-                  <a class="page-link" href=/archive?page=<%= requests.nextPage %>" aria-label="Next">
+                  <a class="page-link" href="/archive?page=<%= requests.nextPage %>" aria-label="Next">
                     <i class="fa fa-angle-right"></i>
-                    <span class="sr-only">Next</span>
+                    <span class="sr-only"></span>
                   </a>
                 </li>
                     <% } %> 
