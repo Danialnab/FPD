@@ -74,7 +74,7 @@ puppeteerExtra.use(stealthPlugin());
 
 const browserstart = async () => {
   browser = await puppeteerExtra.launch({
-    headless: true,
+    headless: false,
     slowMo: 50, // slow down by 50ms
     args: ["--no-sandbox", `--window-size=1200,1000`],
     defaultViewport: {
@@ -126,44 +126,52 @@ router.post("/req", async (req, res) => {
   // }
   const thumbLink = await page.$eval(".thumb", (el) => el.src);
   const title = await page.$eval("h1", (el) => el.innerText);
-  await page.click(".download-button");
-  await delay(2500);
 
-  let curFileName;
-  let fileExtension;
+  const isDuplicate = await Req.findOne({ image: thumbLink });
 
-  const getFileName = async () => {
-    const files = await readdir(dir);
-    const fileNameArr = files[0].split(".");
-    curFileName = fileNameArr[0];
-    fileExtension = fileNameArr[fileNameArr.length - 1];
-    if (fileExtension !== "crdownload") {
-      const mdata = {
-        mlink: link,
-        linkThumb: thumbLink,
-        linkTitle: title,
-        realFileName: `/downloads/${uid}/${curFileName}.${fileExtension}`,
-      };
-      const request = new Req({
-        name: title,
-        link: `/downloads/${uid}/${curFileName}.${fileExtension}`,
-        image: thumbLink,
-        owner: req.user,
-      });
-      const newLog = new Log({
-        action: `${req.user.username} requested the download of ${request.id}`,
-        owner: req.user,
-      });
-      await newLog.save();
-      await request.save();
-      await page.close();
-      res.render("confirmpage", { mdata });
-    } else {
-      await delay(2500);
-      getFileName();
-    }
-  };
-  getFileName();
+  if (isDuplicate) {
+    res.redirect(`/show/${isDuplicate.id}`);
+    return;
+  } else {
+    await page.click(".download-button");
+    await delay(2500);
+
+    let curFileName;
+    let fileExtension;
+
+    const getFileName = async () => {
+      const files = await readdir(dir);
+      const fileNameArr = files[0].split(".");
+      curFileName = fileNameArr[0];
+      fileExtension = fileNameArr[fileNameArr.length - 1];
+      if (fileExtension !== "crdownload") {
+        const mdata = {
+          mlink: link,
+          linkThumb: thumbLink,
+          linkTitle: title,
+          realFileName: `/downloads/${uid}/${curFileName}.${fileExtension}`,
+        };
+        const request = new Req({
+          name: title,
+          link: `/downloads/${uid}/${curFileName}.${fileExtension}`,
+          image: thumbLink,
+          owner: req.user,
+        });
+        const newLog = new Log({
+          action: `${req.user.username} requested the download of ${request.id}`,
+          owner: req.user,
+        });
+        await newLog.save();
+        await request.save();
+        await page.close();
+        res.render("confirmpage", { mdata });
+      } else {
+        await delay(2500);
+        getFileName();
+      }
+    };
+    getFileName();
+  }
 });
 
 module.exports = router;
